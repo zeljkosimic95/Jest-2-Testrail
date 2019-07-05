@@ -18,6 +18,7 @@ npm i jest-2-testrail
 ## Example - **jest-config.js**
 
 The Reporter must be specified in the jest-config.js file, under 'reporters'.
+<br>This file should be created in your project's root folder.
 <br>Parameters are defined as 'project_id', which is the id of your project on TestRail,
 <br>and 'suite_id', which is the id of the suite that should be included in the test run.
 
@@ -61,7 +62,7 @@ describe("Login Page", () => {
 
 ## Example - **.env** file
 
-This file needs to be created in the same directory as the **jest-config.js** file.
+This file needs to be created in your project's root folder.
 <br> It must contain the URL of your TestRail, username (email address) and password (or API key).
 <br> This file needs to have all 3 parameters correctly filled.
 
