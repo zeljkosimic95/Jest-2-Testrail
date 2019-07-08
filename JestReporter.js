@@ -2,6 +2,7 @@ const TestRail = require("testrail");
 
 const dotenv = require("dotenv");
 const fs = require("fs");
+const stripAnsi = require("strip-ansi");
 
 let envFile = null;
 try {
@@ -90,7 +91,7 @@ class Reporter {
             this.testRailResults.push({
               case_id: parseInt(id, 10),
               status_id: 5,
-              comment: spec.failedExpectations[0].message
+              comment: stripAnsi(result.failureMessages[0])
             });
             break;
 

@@ -26,7 +26,8 @@
   "license": "MIT",
   "dependencies": {
     "testrail": "github:dlenroc/node-testrail-api",
-    "dotenv": "8.0.0"
+    "dotenv": "8.0.0",
+    "strip-ansi": "5.2.0"
   },
   "devDependencies": {
     "eslint": "^5.10.0",
