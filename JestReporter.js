@@ -41,11 +41,16 @@ class Reporter {
       hour12: false
     };
 
+    const message = 'Automated test run'
+    if (config.RELEASE) {
+      message = conflig.RELEASE
+    }
+
     const suite = await api.getSuite(suiteId);
     let name = `${suite.name} - ${now.toLocaleString(
       ["en-GB"],
       options
-    )} - (Automated test run)`;
+    )} - (${message})`;
 
     api
       .addRun(projectId, {
