@@ -43,7 +43,7 @@ class Reporter {
 
     const message = 'Automated test run'
     if (config.RELEASE) {
-      message = conflig.RELEASE
+      message = config.RELEASE
     }
 
     const suite = await api.getSuite(suiteId);
