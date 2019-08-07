@@ -41,7 +41,7 @@ class Reporter {
       hour12: false
     };
 
-    const message = 'Automated test run'
+    let message = 'Automated test run'
     if (config.RELEASE) {
       message = config.RELEASE
     }
