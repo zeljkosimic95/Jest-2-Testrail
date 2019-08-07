@@ -1,6 +1,6 @@
 {
   "name": "jest-2-testrail",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Jest based reporter for creating a new run and sending test results to TestRail",
   "main": "JestReporter.js",
   "scripts": {
