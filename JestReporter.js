@@ -62,7 +62,9 @@ class Reporter {
       .then(r => {
         console.log("Created new test run: " + name);
         api
-          .addResultsForCases(r.id, { results: this.testRailResults })
+          .addResultsForCases(r.id, {
+            results: this.testRailResults
+          })
           .then(() => {
             console.log("Added test results");
           })
@@ -79,10 +81,18 @@ class Reporter {
     const specResults = results.testResults;
     for (let j = 0; j < specResults.length; j++) {
       const itResults = specResults[j].testResults;
+
       for (let i = 0; i < itResults.length; i++) {
         const result = itResults[i];
         const id = result.title.split(":")[0];
-        this.caseids.push(parseInt(id, 10));
+        const idNum = parseInt(id, 10)
+
+        if (!Number.isInteger(idNum)) {
+          return
+        }
+
+        this.caseids.push(idNum);
+
         switch (result.status) {
           case "pending":
             this.testRailResults.push({
