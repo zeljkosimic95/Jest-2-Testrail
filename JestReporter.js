@@ -88,7 +88,7 @@ class Reporter {
         const idNum = parseInt(id, 10)
 
         if (!Number.isInteger(idNum)) {
-          return
+          break
         }
 
         this.caseids.push(idNum);
