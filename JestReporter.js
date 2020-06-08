@@ -64,7 +64,6 @@ class Reporter {
           .addResultsForCases(r.id, {
             results: this.testRailResults,
           })
-          .then(api.closeRun(r.id))
           .then(() => {
             console.log('Added test results and closed test run');
           })
@@ -81,14 +80,13 @@ class Reporter {
     const specResults = results.testResults;
     for (let j = 0; j < specResults.length; j += 1) {
       const itResults = specResults[j].testResults;
-
       for (let i = 0; i < itResults.length; i += 1) {
         const result = itResults[i];
         const id = result.title.split(':')[0];
-        const idNum = parseInt(id, 10)
+        const idNum = id.replace(/\D/g,'');
 
-        if (!Number.isInteger(idNum)) {
-          break
+        if (isNaN(idNum)) {
+          break;
         }
 
         this.caseids.push(idNum);
@@ -96,7 +94,7 @@ class Reporter {
         switch (result.status) {
           case 'pending':
             this.testRailResults.push({
-              case_id: parseInt(id, 10),
+              case_id: parseInt(idNum, 10),
               status_id: 2,
               comment: 'Intentionally skipped (xit).',
             });
@@ -104,7 +102,7 @@ class Reporter {
 
           case 'failed':
             this.testRailResults.push({
-              case_id: parseInt(id, 10),
+              case_id: parseInt(idNum, 10),
               status_id: 5,
               comment: stripAnsi(result.failureMessages[0]),
             });
@@ -112,7 +110,7 @@ class Reporter {
 
           case 'passed':
             this.testRailResults.push({
-              case_id: parseInt(id, 10),
+              case_id: parseInt(idNum, 10),
               status_id: 1,
               comment: 'Test passed successfully.',
             });
