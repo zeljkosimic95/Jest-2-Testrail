@@ -1,10 +1,21 @@
 const TestRail = require('testrail');
-
 const dotenv = require('dotenv');
 const fs = require('fs');
 const stripAnsi = require('strip-ansi');
 
+let useTestRail = false;
+
+var myArgs = process.argv.slice(2);
+
+myArgs.map((arg) => {
+  
+  if(arg === '--testrail=true') {
+    useTestRail = true;
+  }
+});
+
 let envFile = null;
+
 try {
   envFile = fs.readFileSync('.env');
 } catch (error) {
@@ -27,6 +38,8 @@ class Reporter {
     this.caseids = [];
     this.testRailResults = [];
   }
+
+
 
   async createRun(projectId, suiteId) {
     const now = new Date();
@@ -65,7 +78,7 @@ class Reporter {
             results: this.testRailResults,
           })
           .then(() => {
-            console.log('Added test results and closed test run');
+            console.log('Added test results');
           })
           .catch((error) => {
             console.log(error.message || error);
@@ -77,6 +90,11 @@ class Reporter {
   }
 
   onRunComplete(contexts, results) {
+
+    if (!useTestRail) { 
+      return;
+    }
+
     const specResults = results.testResults;
     for (let j = 0; j < specResults.length; j += 1) {
       const itResults = specResults[j].testResults;
