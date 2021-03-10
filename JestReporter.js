@@ -1,23 +1,11 @@
+require('dotenv').config();
 const TestRail = require('testrail');
-
-const dotenv = require('dotenv');
-const fs = require('fs');
 const stripAnsi = require('strip-ansi');
 
-let envFile = null;
-try {
-  envFile = fs.readFileSync('.env');
-} catch (error) {
-  console.error("You don't have an .env file!\n", error);
-  process.exit(1);
-}
-
-const config = dotenv.parse(envFile);
-
 const api = new TestRail({
-  host: config.NETWORK_URL,
-  user: config.USERNAME,
-  password: config.PASSWORD,
+  host: process.env.NETWORK_URL,
+  user: process.env.USERNAME,
+  password: process.env.PASSWORD,
 });
 
 class Reporter {
@@ -42,9 +30,7 @@ class Reporter {
     };
 
     let message = 'Automated test run'
-    if (config.RELEASE) {
-      message = config.RELEASE
-    }
+    
     const suite = await api.getSuite(suiteId);
     const name = `${suite.name} - ${now.toLocaleString(
       ['en-GB'],
