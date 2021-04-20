@@ -1,11 +1,12 @@
-require('dotenv').config();
-const TestRail = require('testrail');
-const stripAnsi = require('strip-ansi');
+require("dotenv").config();
+const TestRail = require("testrail");
+const stripAnsi = require("strip-ansi");
+const { getHost, getPassword, getUsername } = require("./environment");
 
 const api = new TestRail({
-  host: process.env.NETWORK_URL,
-  user: process.env.USERNAME,
-  password: process.env.PASSWORD,
+  host: getHost(),
+  password: getPassword(),
+  user: getUsername(),
 });
 
 class Reporter {
@@ -20,22 +21,19 @@ class Reporter {
     const now = new Date();
 
     const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
       hour12: false,
     };
 
-    let message = 'Automated test run'
-    
+    let message = "Automated test run";
+
     const suite = await api.getSuite(suiteId);
-    const name = `${suite.name} - ${now.toLocaleString(
-      ['en-GB'],
-      options,
-    )} - (${message})`;
+    const name = `${suite.name} - ${now.toLocaleString(["en-GB"], options)} - (${message})`;
 
     api
       .addRun(projectId, {
@@ -45,14 +43,14 @@ class Reporter {
         case_ids: this.caseids,
       })
       .then((r) => {
-        console.log('Created new test run: ' + name);
+        console.log("Created new test run: " + name);
         api
           .addResultsForCases(r.id, {
             results: this.testRailResults,
           })
           .then(api.closeRun(r.id))
           .then(() => {
-            console.log('Added test results and closed test run');
+            console.log("Added test results and closed test run");
           })
           .catch((error) => {
             console.log(error.message || error);
@@ -70,25 +68,25 @@ class Reporter {
 
       for (let i = 0; i < itResults.length; i += 1) {
         const result = itResults[i];
-        const id = result.title.split(':')[0];
-        const idNum = parseInt(id, 10)
+        const id = result.title.split(":")[0];
+        const idNum = parseInt(id, 10);
 
         if (!Number.isInteger(idNum)) {
-          break
+          break;
         }
 
         this.caseids.push(idNum);
 
         switch (result.status) {
-          case 'pending':
+          case "pending":
             this.testRailResults.push({
               case_id: parseInt(id, 10),
               status_id: 2,
-              comment: 'Intentionally skipped (xit).',
+              comment: "Intentionally skipped (xit).",
             });
             break;
 
-          case 'failed':
+          case "failed":
             this.testRailResults.push({
               case_id: parseInt(id, 10),
               status_id: 5,
@@ -96,11 +94,11 @@ class Reporter {
             });
             break;
 
-          case 'passed':
+          case "passed":
             this.testRailResults.push({
               case_id: parseInt(id, 10),
               status_id: 1,
-              comment: 'Test passed successfully.',
+              comment: "Test passed successfully.",
             });
             break;
 
