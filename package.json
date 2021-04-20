@@ -4,7 +4,7 @@
   "description": "Jest based reporter for creating a new run and sending test results to TestRail",
   "main": "JestReporter.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [
     "jest",
@@ -32,7 +32,9 @@
   "devDependencies": {
     "eslint": "^5.10.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0"
+    "eslint-plugin-import": "^2.14.0",
+    "faker": "^5.5.3",
+    "jest": "^26.6.3"
   },
   "homepage": "https://github.com/zeljkosimic95/Jest-2-Testrail",
   "repository": {
